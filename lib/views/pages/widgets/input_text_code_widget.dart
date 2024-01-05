@@ -7,6 +7,7 @@ class InputTextCode extends StatelessWidget {
   InputTextCode({
     super.key,
     required this.hintText,
+    this.type = TextInputType.number,
     this.labelText,
     this.hasIcon = false,
     this.icon,
@@ -21,6 +22,7 @@ class InputTextCode extends StatelessWidget {
 
   final String hintText;
   final String? labelText;
+  final TextInputType type;
   final bool hasIcon;
   final IconData? icon;
   final bool isPassword;
@@ -44,7 +46,7 @@ class InputTextCode extends StatelessWidget {
     return isPassword
         ? Obx(() => TextFormField(
               focusNode: focusNode,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: type,
               obscureText: isVisible.value,
               controller: ctrlValue,
               validator: validatorFunction as String? Function(String?)?,
@@ -86,6 +88,7 @@ class InputTextCode extends StatelessWidget {
         : TextFormField(
             controller: ctrlValue,
             validator: validatorFunction as String? Function(String?)?,
+            keyboardType: type,
             style: TextStyle(
               color: (Get.isDarkMode)
                   ? Get.theme.primaryColorLight

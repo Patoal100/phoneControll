@@ -8,9 +8,9 @@ import 'package:flutter_control_aplication/utils/main_binding.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //: Previene la Rotación del dispositivo
+  //: Establece la orientación del dispositivo siempre en horizontal
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
 
   runApp(const ControllApp());
   // connectionStatus.initialize();
@@ -34,82 +34,5 @@ class ControllApp extends StatelessWidget {
       darkTheme: Themes.darkTheme,
       themeMode: ThemeMode.system,
     );
-    // return GetMaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   title: 'Control Interactivo',
-    //   home: Scaffold(
-    //     body: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       crossAxisAlignment: CrossAxisAlignment.center,
-    //       children: [
-    //         const Text(
-    //           'Bienvenido',
-    //           style: TextStyle(
-    //             fontSize: 20 * 1.3,
-    //             // color: (Get.isDarkMode)
-    //             //     ? Colors.white
-    //             //     : Get.theme.primaryColor,
-    //           ),
-    //         ),
-    //         const SizedBox(height: 20),
-    //         const TextField(
-    //           decoration: InputDecoration(
-    //             border: OutlineInputBorder(
-    //               borderRadius: BorderRadius.all(Radius.circular(25)),
-    //               borderSide: BorderSide(
-    //                 width: 1,
-    //                 color: Colors.red,
-    //               ),
-    //             ),
-    //             hintText: 'Ingrese el código',
-    //             labelText: 'Código',
-    //           ),
-    //         ),
-    //         const SizedBox(height: 20),
-    //         Row(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             ElevatedButton(
-    //               onPressed: () {},
-    //               child: const Text(
-    //                 'Ingresar',
-    //                 style: TextStyle(
-    //                   fontSize: 20 * 1.3,
-    //                   color: Colors.blueAccent,
-    //                   // color: (Get.isDarkMode)
-    //                   //     ? Colors.white
-    //                   //     : Get.theme.primaryColor,
-    //                 ),
-    //               ),
-    //             ),
-    //             const SizedBox(width: 20),
-    //             ElevatedButton(
-    //               onPressed: () {},
-    //               child: const Text(
-    //                 'Limpiar',
-    //                 style: TextStyle(
-    //                   fontSize: 20 * 1.3,
-    //                   color: Colors.blueAccent,
-    //                   // color: (Get.isDarkMode)
-    //                   //     ? Colors.white
-    //                   //     : Get.theme.primaryColor,
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    //   // translations: Translation(),
-    //   // locale: Locale('es', 'ES'),
-    //   // fallbackLocale: const Locale('es', 'ES'),
-    //   // initialRoute: IsMusRoutes.dashboard,
-    //   // getPages: IsMusPages.pages,
-    //   // initialBinding: MainBinding(),
-    //   // theme: Themes.lightTheme,
-    //   // darkTheme: Themes.darkTheme,
-    //   // themeMode: ThemeMode.system,
-    // );
   }
 }
