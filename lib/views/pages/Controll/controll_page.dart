@@ -3,23 +3,35 @@ import 'package:get/get.dart';
 import 'package:flutter_control_aplication/domain/controllers/controll_controller.dart';
 import 'package:flutter_control_aplication/views/pages/widgets/controll_botton_widget.dart';
 import 'package:flutter_control_aplication/views/pages/widgets/clouds_decoration_widget.dart';
+import 'package:flutter_control_aplication/views/pages/configuration/configurationMenu_page.dart';
+import 'package:flutter_control_aplication/domain/controllers/configuration_controller.dart';
 
+// ignore: must_be_immutable
 class ControllPage extends GetWidget<ControllController> {
+  late Map result;
+
+  ControllPage({super.key});
   @override
   Widget build(BuildContext context) {
+    result = Get.arguments;
     return Scaffold(
       body: _decorateBody(),
+      floatingActionButton: const ConfigurationMenu(),
     );
   }
 
   Widget _decorateBody() {
     return Stack(
       children: [
-        CustomPaint(
-          size: const Size(
-              double.infinity, 50), // Tamaño del CustomPaint superior
-          painter: MyCustomPainter(), // Tu clase CustomPainter
-        ),
+        Obx(() => CustomPaint(
+              size: Size(
+                  double.infinity,
+                  50 *
+                      Get.find<ConfigurationController>()
+                          .itemSize
+                          .value), // Tamaño del CustomPaint superior
+              painter: MyCustomPainter(), // Tu clase CustomPainter
+            )),
         _buildBody(),
       ],
     );
@@ -30,26 +42,42 @@ class ControllPage extends GetWidget<ControllController> {
         child: Padding(
             padding: const EdgeInsets.all(20),
             child: Center(
-                child: Column(
-              children: [
-                const SizedBox(height: 80),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomButton(
-                      percentage: 0.35,
-                      base64Image: '',
-                      onPressed: () => Get.toNamed('/qr_code'),
-                    ),
-                    const SizedBox(width: 50),
-                    CustomButton(
-                      percentage: 0.35,
-                      base64Image: '',
-                      onPressed: () => Get.toNamed('/qr_code'),
-                    ),
-                  ],
-                ),
-              ],
-            ))));
+                child: Obx(() => Column(
+                      children: [
+                        SizedBox(
+                            height: 80 *
+                                Get.find<ConfigurationController>()
+                                    .itemSize
+                                    .value),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                                child: CustomButton(
+                              percentage: 0.35 *
+                                  Get.find<ConfigurationController>()
+                                      .itemSize
+                                      .value,
+                              base64Image: result['image'],
+                              onPressed: () => Get.toNamed('/qr_code'),
+                            )),
+                            SizedBox(
+                                width: 50 *
+                                    Get.find<ConfigurationController>()
+                                        .itemSize
+                                        .value),
+                            Flexible(
+                                child: CustomButton(
+                              percentage: 0.35 *
+                                  Get.find<ConfigurationController>()
+                                      .itemSize
+                                      .value,
+                              base64Image: result['image'],
+                              onPressed: () => Get.toNamed('/qr_code'),
+                            )),
+                          ],
+                        ),
+                      ],
+                    )))));
   }
 }

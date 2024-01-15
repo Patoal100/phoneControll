@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_control_aplication/utils/Utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:flutter_control_aplication/services/sync_service.dart';
 
 class QrCodeController extends GetxController {
   // Aquí puedes agregar tus variables observables, métodos, etc.
@@ -63,5 +64,12 @@ class QrCodeController extends GetxController {
         code.value = codeController.text;
       }
     }
+  }
+
+  Future<Map> getImageBytes() async {
+    final requestParameters = {'id': 1};
+    Map pdfBytes = await syncLocalData.imageBytes(
+        'http://192.168.18.15:8000/Alausi/api/forms/image/', requestParameters);
+    return pdfBytes;
   }
 }

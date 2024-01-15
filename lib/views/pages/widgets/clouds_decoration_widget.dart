@@ -25,11 +25,11 @@ class MyCustomPainter extends CustomPainter {
 
     // Dibuja los círculos que forman la nube
     canvas.drawCircle(
-        Offset(size.width * 0.3, size.height * 0.5), size.width * 0.05, paint);
+        Offset(size.width * 0.3, size.height * 0.4), size.width * 0.068, paint);
     canvas.drawCircle(
         Offset(size.width * 0.4, size.height * 0.5), size.width * 0.075, paint);
     canvas.drawCircle(
-        Offset(size.width * 0.5, size.height * 0.5), size.width * 0.05, paint);
+        Offset(size.width * 0.5, size.height * 0.4), size.width * 0.068, paint);
 
     // Dibuja los círculos que forman la nube
     canvas.drawCircle(
@@ -41,11 +41,11 @@ class MyCustomPainter extends CustomPainter {
 
     // Dibuja los círculos que forman la nube
     canvas.drawCircle(
-        Offset(size.width * 0.8, size.height * 0.5), size.width * 0.05, paint);
+        Offset(size.width * 0.8, size.height * 0.4), size.width * 0.068, paint);
     canvas.drawCircle(
         Offset(size.width * 0.9, size.height * 0.5), size.width * 0.075, paint);
     canvas.drawCircle(
-        Offset(size.width * 1.0, size.height * 0.5), size.width * 0.05, paint);
+        Offset(size.width * 1.0, size.height * 0.4), size.width * 0.068, paint);
   }
 
   @override

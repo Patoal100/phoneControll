@@ -11,7 +11,6 @@ void main() {
   //: Establece la orientación del dispositivo siempre en horizontal
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
-
   runApp(const ControllApp());
   // connectionStatus.initialize();
 }
@@ -21,6 +20,7 @@ class ControllApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Control Interactivo',

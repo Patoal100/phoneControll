@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_control_aplication/utils/Utils.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ControllController extends GetxController {
   // Aquí puedes agregar tus variables observables, métodos, etc.
