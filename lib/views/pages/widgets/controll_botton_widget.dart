@@ -1,43 +1,87 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton(
-      {super.key,
-      required this.percentage,
-      required this.base64Image,
-      required this.onPressed});
+  const CustomButton({
+    super.key,
+    required this.percentage,
+    required this.onPressed,
+    required this.hasText,
+    this.buttonText,
+    required this.hasIcon,
+    this.icon,
+    // required this.shape,
+  });
 
   final double percentage;
-  final String base64Image;
   final Function onPressed;
+  final bool hasText;
+  final String? buttonText;
+  final bool hasIcon;
+  final IconData? icon;
+  // final BoxShape shape;
 
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width * percentage;
-    // print(base64Image[base64Image.length - 1]);
-    Image image = imageFromBase64String(base64Image);
 
+    if (hasText && buttonText == null) {
+      //Get.snackbar('Error', 'hasIcon is true but icon is null');
+      throw ArgumentError('hasText is true but buttonText is null');
+    }
+
+    if (hasIcon && icon == null) {
+      //Get.snackbar('Error', 'hasIcon is true but icon is null');
+      throw ArgumentError('hasIcon is true but icon is null');
+    }
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: image.image,
-          fit: BoxFit.cover,
-        ),
-        shape: BoxShape.circle,
+      decoration: const BoxDecoration(
+        shape: BoxShape.rectangle,
       ),
       child: ElevatedButton(
-        child: null,
-        style: ElevatedButton.styleFrom(
-          shape: const CircleBorder(),
-          backgroundColor: Colors.transparent,
-          padding: const EdgeInsets.all(0),
-        ),
-        onPressed: () => onPressed(),
-      ),
+          style: ElevatedButton.styleFrom(
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.circular(size * 0.1),
+            ),
+            padding: const EdgeInsets.all(0),
+            backgroundColor: Get.isDarkMode
+                ? Theme.of(context).primaryColor
+                : const Color.fromARGB(255, 103, 194, 255),
+          ),
+          onPressed: () => onPressed(),
+          child: hasText
+              ? Text(
+                  buttonText!,
+                  style: TextStyle(
+                    fontSize: 150 *
+                        percentage, // Cambia el tamaño de la fuente según tus necesidades
+                    color: Colors
+                        .white, // Cambia el color del texto según tus necesidades
+                    fontWeight:
+                        FontWeight.bold, // Hace que el texto sea negrita
+                  ),
+                )
+              : hasIcon
+                  ? Icon(
+                      icon,
+                      size: size * 0.8,
+                      color: Colors.white,
+                    )
+                  : const Text(
+                      'Button',
+                      style: TextStyle(
+                        fontSize:
+                            50, // Cambia el tamaño de la fuente según tus necesidades
+                        color: Colors
+                            .white, // Cambia el color del texto según tus necesidades
+                        fontWeight:
+                            FontWeight.bold, // Hace que el texto sea negrita
+                      ),
+                    )),
     );
   }
 

@@ -4,12 +4,14 @@ import 'package:flutter_control_aplication/utils/Utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter_control_aplication/services/sync_service.dart';
+import 'package:flutter_control_aplication/services/websocket_service.dart';
 
 class QrCodeController extends GetxController {
   // Aquí puedes agregar tus variables observables, métodos, etc.
   late TextEditingController codeController;
   final showQr = false.obs;
   RxString code = ''.obs;
+  Map data = {};
   @override
   void onInit() {
     codeController = TextEditingController();
@@ -24,7 +26,7 @@ class QrCodeController extends GetxController {
   }
 
   void gotoControll() {
-    Get.toNamed('/control');
+    Get.toNamed('/control', arguments: data);
   }
 
   Future<void> saveQrCode() async {
@@ -64,6 +66,17 @@ class QrCodeController extends GetxController {
         code.value = codeController.text;
       }
     }
+  }
+
+  void connectWebSocket() async {
+    // Crear una instancia de WebSocketService
+    WebSocketService webSocketService = WebSocketService();
+
+    // Asignar la URL
+    String url = "ws://tu-url-aqui";
+
+    // Llamar a connectToWebSocket en WebSocketService
+    await webSocketService.connectToWebSocket(url);
   }
 
   Future<Map> getImageBytes() async {

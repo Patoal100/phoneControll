@@ -58,8 +58,10 @@ class ControllPage extends GetWidget<ControllController> {
                                   Get.find<ConfigurationController>()
                                       .itemSize
                                       .value,
-                              base64Image: result['image'],
+                              buttonText: "Apple",
                               onPressed: () => Get.toNamed('/qr_code'),
+                              hasText: true,
+                              hasIcon: false,
                             )),
                             SizedBox(
                                 width: 50 *
@@ -72,8 +74,10 @@ class ControllPage extends GetWidget<ControllController> {
                                   Get.find<ConfigurationController>()
                                       .itemSize
                                       .value,
-                              base64Image: result['image'],
+                              buttonText: "Blueberry",
                               onPressed: () => Get.toNamed('/qr_code'),
+                              hasText: true,
+                              hasIcon: false,
                             )),
                           ],
                         ),

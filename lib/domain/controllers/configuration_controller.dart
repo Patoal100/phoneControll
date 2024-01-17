@@ -30,11 +30,11 @@ class ConfigurationController extends GetxController {
     configValue.value = newValue;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    // Aquí puedes inicializar tus variables o llamar a métodos al iniciar el controlador
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   // Aquí puedes inicializar tus variables o llamar a métodos al iniciar el controlador
+  // }
 
   @override
   void onClose() {
