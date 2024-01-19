@@ -58,8 +58,14 @@ class ControllPage extends GetWidget<ControllController> {
                                   Get.find<ConfigurationController>()
                                       .itemSize
                                       .value,
-                              buttonText: "Apple",
-                              onPressed: () => Get.toNamed('/qr_code'),
+                              buttonText: result['options']
+                                  [controller.index.value][0],
+                              onPressed: () => controller.sendMessage({
+                                'motion': 'left',
+                                'message': result['options']
+                                    [controller.index.value][0],
+                                'isCorrect': null
+                              }, result['cards'][controller.index.value]),
                               hasText: true,
                               hasIcon: false,
                             )),
@@ -74,8 +80,14 @@ class ControllPage extends GetWidget<ControllController> {
                                   Get.find<ConfigurationController>()
                                       .itemSize
                                       .value,
-                              buttonText: "Blueberry",
-                              onPressed: () => Get.toNamed('/qr_code'),
+                              buttonText: result['options']
+                                  [controller.index.value][1],
+                              onPressed: () => controller.sendMessage({
+                                'motion': 'right',
+                                'message': result['options']
+                                    [controller.index.value][1],
+                                'isCorrect': null
+                              }, result['cards'][controller.index.value]),
                               hasText: true,
                               hasIcon: false,
                             )),

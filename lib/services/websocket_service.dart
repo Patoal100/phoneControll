@@ -1,10 +1,10 @@
+import 'dart:convert';
+
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:web_socket_channel/io.dart';
 
 class WebSocketService extends GetxController {
   late IOWebSocketChannel _channel;
-  late String _url;
-
   // Instancia privada estática
   static WebSocketService? _instance;
 
@@ -16,24 +16,27 @@ class WebSocketService extends GetxController {
   // Constructor interno
   WebSocketService._internal();
 
-  @override
-  void onInit() {
-    super.onInit();
-    connectToWebSocket(_url);
-  }
-
   Future<void> connectToWebSocket(url) async {
     _channel = await IOWebSocketChannel.connect(url);
+    var data = {
+      'motion': '',
+      'isCorrect': null,
+      'message': 'phone',
+    };
+    sendMessage(data);
     _channel.stream.listen((message) {
       // Maneja los mensajes entrantes aquí
-      print(message);
+      onMessageReceived(message);
     });
   }
 
-  void sendMessage(String message) {
-    if (_channel.sink != null) {
-      _channel.sink.add(message);
-    }
+  void sendMessage(var message) {
+    _channel.sink.add(jsonEncode(message));
+  }
+
+  Future<void> onMessageReceived(String message) async {
+    var decodedMessage = jsonDecode(message);
+    print('Decoded message: $decodedMessage');
   }
 
   @override

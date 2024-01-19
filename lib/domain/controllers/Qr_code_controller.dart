@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_control_aplication/utils/Utils.dart';
@@ -11,7 +13,7 @@ class QrCodeController extends GetxController {
   late TextEditingController codeController;
   final showQr = false.obs;
   RxString code = ''.obs;
-  Map data = {};
+  late Map data;
   @override
   void onInit() {
     codeController = TextEditingController();
@@ -51,8 +53,11 @@ class QrCodeController extends GetxController {
         // Permiso otorgado, puedes abrir la pantalla de escaneo de códigos QR aquí
         String? scanResult = await scanner.scan();
         if (scanResult != null) {
-          codeController.text = scanResult.toString();
-          code.value = codeController.text;
+          data = jsonDecode(scanResult);
+          connectWebSocket();
+          // codeController.text = scanResult.toString();
+          // Util.showInfo(scanResult.toString());
+          // code.value = codeController.text;
         }
       } else {
         // Permiso denegado por el usuario
@@ -62,8 +67,12 @@ class QrCodeController extends GetxController {
       // Permiso otorgado, puedes abrir la pantalla de escaneo de códigos QR aquí
       String? scanResult = await scanner.scan();
       if (scanResult != null) {
-        codeController.text = scanResult.toString();
-        code.value = codeController.text;
+        data = jsonDecode(scanResult);
+        connectWebSocket();
+        // codeController.text = scanResult.toString();
+
+        // Util.showInfo(scanResult.toString());
+        // code.value = codeController.text;
       }
     }
   }
@@ -73,10 +82,11 @@ class QrCodeController extends GetxController {
     WebSocketService webSocketService = WebSocketService();
 
     // Asignar la URL
-    String url = "ws://tu-url-aqui";
+    String url = data['url'];
 
     // Llamar a connectToWebSocket en WebSocketService
     await webSocketService.connectToWebSocket(url);
+    gotoControll();
   }
 
   Future<Map> getImageBytes() async {
