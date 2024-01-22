@@ -16,18 +16,21 @@ class WebSocketService extends GetxController {
   // Constructor interno
   WebSocketService._internal();
 
-  Future<void> connectToWebSocket(url) async {
-    _channel = await IOWebSocketChannel.connect(url);
-    var data = {
-      'motion': '',
-      'isCorrect': null,
-      'message': 'phone',
-    };
-    sendMessage(data);
-    _channel.stream.listen((message) {
-      // Maneja los mensajes entrantes aquí
-      onMessageReceived(message);
-    });
+  Future<bool> connectToWebSocket(url) async {
+    try {
+      _channel = IOWebSocketChannel.connect(url);
+      await _channel.ready;
+      _channel.stream.listen((message) {
+        // Maneja los mensajes entrantes aquí
+        onMessageReceived(message);
+      });
+
+      // Si la conexión fue exitosa, devuelve true
+      return true;
+    } catch (e) {
+      // Si hubo un error, devuelve false
+      return false;
+    }
   }
 
   void sendMessage(var message) {

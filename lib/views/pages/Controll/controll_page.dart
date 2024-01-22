@@ -65,7 +65,7 @@ class ControllPage extends GetWidget<ControllController> {
                                 'message': result['options']
                                     [controller.index.value][0],
                                 'isCorrect': null
-                              }, result['cards'][controller.index.value]),
+                              }, result['cards']),
                               hasText: true,
                               hasIcon: false,
                             )),
@@ -87,7 +87,7 @@ class ControllPage extends GetWidget<ControllController> {
                                 'message': result['options']
                                     [controller.index.value][1],
                                 'isCorrect': null
-                              }, result['cards'][controller.index.value]),
+                              }, result['cards']),
                               hasText: true,
                               hasIcon: false,
                             )),

@@ -75,14 +75,18 @@ class QrCodePage extends GetWidget<QrCodeController> {
                               Get.find<ConfigurationController>()
                                   .itemSize
                                   .value),
-                      CustomButton(
-                        percentage: 0.35 *
-                            Get.find<ConfigurationController>().itemSize.value,
-                        onPressed: () => controller.scannQrCode(),
-                        hasText: false,
-                        hasIcon: true,
-                        icon: Icons.qr_code,
-                      ),
+                      controller.isLoading
+                          ? const CircularProgressIndicator()
+                          : CustomButton(
+                              percentage: 0.35 *
+                                  Get.find<ConfigurationController>()
+                                      .itemSize
+                                      .value,
+                              onPressed: () => controller.scannQrCode(),
+                              hasText: false,
+                              hasIcon: true,
+                              icon: Icons.qr_code,
+                            ),
                     ])))));
   }
 }

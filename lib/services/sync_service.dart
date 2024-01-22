@@ -28,4 +28,19 @@ class SyncServiceSingleton {
       return {'error': true, 'message': 'Servicio no disponible'};
     }
   }
+
+  Future<Map> jsonData(String url, Map<String, dynamic> fileParameters) async {
+    try {
+      final response = await apiService
+          .postData(url, fileParameters, null)
+          .timeout(const Duration(seconds: 10));
+      if (response != null && response is Map<String, dynamic>) {
+        return response;
+      } else {
+        return {'error': true, 'message': 'No se puede obtener la información'};
+      }
+    } catch (e) {
+      return {'error': true, 'message': 'Servicio no disponible'};
+    }
+  }
 }

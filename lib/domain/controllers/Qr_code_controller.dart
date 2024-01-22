@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class QrCodeController extends GetxController {
   final showQr = false.obs;
   RxString code = ''.obs;
   late Map data;
+  bool isLoading = false;
+
   @override
   void onInit() {
     codeController = TextEditingController();
@@ -28,7 +31,9 @@ class QrCodeController extends GetxController {
   }
 
   void gotoControll() {
-    Get.toNamed('/control', arguments: data);
+    if (data['info'] != null) {
+      Get.toNamed('/control', arguments: data['info']);
+    }
   }
 
   Future<void> saveQrCode() async {
@@ -53,46 +58,93 @@ class QrCodeController extends GetxController {
         // Permiso otorgado, puedes abrir la pantalla de escaneo de códigos QR aquí
         String? scanResult = await scanner.scan();
         if (scanResult != null) {
-          data = jsonDecode(scanResult);
-          connectWebSocket();
-          // codeController.text = scanResult.toString();
-          // Util.showInfo(scanResult.toString());
-          // code.value = codeController.text;
+          await createConnection(scanResult);
         }
       } else {
         // Permiso denegado por el usuario
-        Util.showError('Necesitas permiso para acceder a la cámara');
+        Util.showError('need_permission'.tr);
       }
     } else {
       // Permiso otorgado, puedes abrir la pantalla de escaneo de códigos QR aquí
       String? scanResult = await scanner.scan();
       if (scanResult != null) {
-        data = jsonDecode(scanResult);
-        connectWebSocket();
-        // codeController.text = scanResult.toString();
-
-        // Util.showInfo(scanResult.toString());
-        // code.value = codeController.text;
+        await createConnection(scanResult);
       }
     }
   }
 
-  void connectWebSocket() async {
+  Future<void> createConnection(scanResult) async {
+    try {
+      String connect = base64ToString(scanResult);
+      String url = connect.split('|')[0].trim();
+      String token = connect.split('|')[1];
+      data = await postConection(url, token);
+      isLoading = true; // Comienza la carga
+      update(); // Actualiza la interfaz de usuario
+      await connectWebSocket().timeout(const Duration(seconds: 10),
+          onTimeout: () {
+        throw TimeoutException(
+            'La conexión ha tardado demasiado tiempo y se ha agotado el tiempo de espera.');
+      });
+      isLoading = false; // Termina la carga
+      update(); // Actualiza la interfaz de usuario
+      gotoControll();
+    } catch (e) {
+      isLoading = false; // Termina la carga
+      update(); // Actualiza la interfaz de usuario
+      if (e is TimeoutException) {
+        Util.showError('try_again'
+            .tr); // Muestra un error si la conexión tarda demasiado tiempo
+      } else {
+        if (data['message'] == null) {
+          Util.showError('invalid_qr_code'.tr);
+        } else {
+          Util.showError('failed_websocket_connection'.tr);
+        }
+      }
+      return;
+    }
+  }
+
+  String base64ToString(String base64Str) {
+    List<int> bytes = base64.decode(base64Str);
+    String result = utf8.decode(bytes);
+    return result;
+  }
+
+  Future<void> connectWebSocket() async {
     // Crear una instancia de WebSocketService
     WebSocketService webSocketService = WebSocketService();
 
+    if (data['info']['info']['url_socket'] == null) {
+      // Si no hay información, muestra un error
+      Util.showError('invalid_qr_code'.tr);
+      return;
+    }
     // Asignar la URL
-    String url = data['url'];
+    String url = data['info']['info']['url_socket'];
 
     // Llamar a connectToWebSocket en WebSocketService
-    await webSocketService.connectToWebSocket(url);
-    gotoControll();
+    bool isConnected = await webSocketService.connectToWebSocket(url);
+
+    if (isConnected) {
+      // Si la conexión fue exitosa, envía el código QR al servidor
+      var message = {
+        'motion': '',
+        'isCorrect': null,
+        'message': 'hide',
+      };
+      await Future.delayed(const Duration(seconds: 2));
+      webSocketService.sendMessage(message);
+    } else {
+      // Si la conexión falló, muestra un error
+      Util.showError('try_again'.tr);
+    }
   }
 
-  Future<Map> getImageBytes() async {
-    final requestParameters = {'id': 1};
-    Map pdfBytes = await syncLocalData.imageBytes(
-        'http://192.168.18.15:8000/Alausi/api/forms/image/', requestParameters);
+  Future<Map> postConection(String url, String token) async {
+    final requestParameters = {'token': token};
+    Map pdfBytes = await syncLocalData.jsonData(url, requestParameters);
     return pdfBytes;
   }
 }

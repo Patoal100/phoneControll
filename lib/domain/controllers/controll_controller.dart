@@ -16,13 +16,14 @@ class ControllController extends GetxController {
     // Aquí puedes agregar inicializaciones que necesites al crear la clase
   }
 
-  Future<void> sendMessage(var message, Map card) async {
+  Future<void> sendMessage(var message, Map cards) async {
+    List<dynamic> card = cards.values.toList();
     // Crear una instancia de WebSocketService
     WebSocketService webSocketService = WebSocketService();
 
     webSocketService.sendMessage(message);
 
-    if (card['descripcion'] == message['message']) {
+    if (card[index.value]['traduccion'] == message['message']) {
       index++;
     } else {
       var hasCustomVibrationsSupport =
