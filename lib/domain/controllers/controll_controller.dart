@@ -37,9 +37,19 @@ class ControllController extends GetxController {
       }
     }
     if (index.value == 4) {
-      index.value = 0;
       gotoQrCode();
     }
+  }
+
+  getCards(Map cards, String url) {
+    int index = url.indexOf("/500");
+    String newUrl = url.substring(0, index);
+    List<dynamic> card = cards.values.toList();
+    Map result = {};
+    for (var i = 0; i < card.length; i++) {
+      result[card[i]['traduccion']] = newUrl + card[i]['audio'];
+    }
+    return result;
   }
 
   gotoQrCode() {

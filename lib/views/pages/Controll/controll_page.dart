@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_control_aplication/views/pages/widgets/sound_button_widget.dart';
 import 'package:get/get.dart';
 import 'package:flutter_control_aplication/domain/controllers/controll_controller.dart';
 import 'package:flutter_control_aplication/views/pages/widgets/controll_botton_widget.dart';
@@ -9,11 +10,13 @@ import 'package:flutter_control_aplication/domain/controllers/configuration_cont
 // ignore: must_be_immutable
 class ControllPage extends GetWidget<ControllController> {
   late Map result;
+  late Map cards;
 
   ControllPage({super.key});
   @override
   Widget build(BuildContext context) {
-    result = Get.arguments;
+    result = Get.arguments['info'];
+    cards = controller.getCards(result['cards'], Get.arguments['url']);
     return Scaffold(
       body: _decorateBody(),
       floatingActionButton: const ConfigurationMenu(),
@@ -53,44 +56,62 @@ class ControllPage extends GetWidget<ControllController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Flexible(
-                                child: CustomButton(
-                              percentage: 0.35 *
-                                  Get.find<ConfigurationController>()
-                                      .itemSize
-                                      .value,
-                              buttonText: result['options']
-                                  [controller.index.value][0],
-                              onPressed: () => controller.sendMessage({
-                                'motion': 'left',
-                                'message': result['options']
+                                child: Column(children: [
+                              SoundButton(
+                                  link: cards[result['options']
+                                      [controller.index.value][0]],
+                                  percentage: 0.05 *
+                                      Get.find<ConfigurationController>()
+                                          .itemSize
+                                          .value),
+                              CustomButton(
+                                percentage: 0.35 *
+                                    Get.find<ConfigurationController>()
+                                        .itemSize
+                                        .value,
+                                buttonText: result['options']
                                     [controller.index.value][0],
-                                'isCorrect': null
-                              }, result['cards']),
-                              hasText: true,
-                              hasIcon: false,
-                            )),
+                                onPressed: () => controller.sendMessage({
+                                  'motion': 'left',
+                                  'message': result['options']
+                                      [controller.index.value][0],
+                                  'isCorrect': null
+                                }, result['cards']),
+                                hasText: true,
+                                hasIcon: false,
+                              )
+                            ])),
                             SizedBox(
                                 width: 50 *
                                     Get.find<ConfigurationController>()
                                         .itemSize
                                         .value),
                             Flexible(
-                                child: CustomButton(
-                              percentage: 0.35 *
-                                  Get.find<ConfigurationController>()
-                                      .itemSize
-                                      .value,
-                              buttonText: result['options']
-                                  [controller.index.value][1],
-                              onPressed: () => controller.sendMessage({
-                                'motion': 'right',
-                                'message': result['options']
+                                child: Column(children: [
+                              SoundButton(
+                                  link: cards[result['options']
+                                      [controller.index.value][1]],
+                                  percentage: 0.05 *
+                                      Get.find<ConfigurationController>()
+                                          .itemSize
+                                          .value),
+                              CustomButton(
+                                percentage: 0.35 *
+                                    Get.find<ConfigurationController>()
+                                        .itemSize
+                                        .value,
+                                buttonText: result['options']
                                     [controller.index.value][1],
-                                'isCorrect': null
-                              }, result['cards']),
-                              hasText: true,
-                              hasIcon: false,
-                            )),
+                                onPressed: () => controller.sendMessage({
+                                  'motion': 'right',
+                                  'message': result['options']
+                                      [controller.index.value][1],
+                                  'isCorrect': null
+                                }, result['cards']),
+                                hasText: true,
+                                hasIcon: false,
+                              )
+                            ])),
                           ],
                         ),
                       ],

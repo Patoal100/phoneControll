@@ -16,6 +16,7 @@ class QrCodeController extends GetxController {
   RxString code = ''.obs;
   late Map data;
   bool isLoading = false;
+  late String url;
 
   @override
   void onInit() {
@@ -32,7 +33,7 @@ class QrCodeController extends GetxController {
 
   void gotoControll() {
     if (data['info'] != null) {
-      Get.toNamed('/control', arguments: data['info']);
+      Get.toNamed('/control', arguments: {'info': data['info'], 'url': url});
     }
   }
 

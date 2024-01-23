@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_control_aplication/utils/Utils.dart';
+import 'package:flutter_control_aplication/views/pages/widgets/sound_button_widget.dart';
 import 'package:get/get.dart';
 import 'package:flutter_control_aplication/domain/controllers/Qr_code_controller.dart'; // Asegúrate de importar tu controlador
 import 'package:flutter_control_aplication/views/pages/widgets/clouds_decoration_widget.dart'; // Asegúrate de importar tu controlador
 import 'package:flutter_control_aplication/views/pages/widgets/controll_botton_widget.dart'; // Asegúrate de importar tu controlador
-import 'package:flutter_control_aplication/routes/routes.dart'; // Asegúrate de importar tu controlador
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_control_aplication/views/pages/configuration/configurationMenu_page.dart';
 import 'package:flutter_control_aplication/domain/controllers/configuration_controller.dart';
@@ -16,15 +15,12 @@ class QrCodePage extends GetWidget<QrCodeController> {
   final FlutterTts flutterTts = FlutterTts();
 
   speak() async {
-    var result = await flutterTts.speak('welcome'.tr);
-    if (result == 1) {
-      print("El texto se ha convertido en voz exitosamente");
-    }
+    await flutterTts.speak('welcome'.tr);
   }
 
   @override
   Widget build(BuildContext context) {
-    // speak();
+    speak();
     return Scaffold(
       // appBar: AppBar(
       //   title: Text('welcome'.tr),
@@ -87,6 +83,11 @@ class QrCodePage extends GetWidget<QrCodeController> {
                               hasIcon: true,
                               icon: Icons.qr_code,
                             ),
+                      SizedBox(
+                          height: 30 *
+                              Get.find<ConfigurationController>()
+                                  .itemSize
+                                  .value),
                     ])))));
   }
 }
